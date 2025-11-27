@@ -1,0 +1,112 @@
+name: Deploy to AWS AppRunner
+
+# This workflow deploys your application to AWS AppRunner
+# 
+# Setup required:
+# 1. Deploy InfraStack: npx cdk deploy InfraStack-dev -c environment=dev
+# 2. Deploy AppStack-dev: npm run deploy:dev
+# 3. Add GitHub secrets: AWS_ROLE_ARN and AWS_REGION
+# 4. (Optional) Deploy AppStack-prod: npm run deploy:prod
+# 5. (Optional) Uncomment 'main' branch below to enable prod auto-deploy
+
+on:
+  push:
+    branches:
+      - develop  # Auto-deploy dev environment
+      # Uncomment the line below to enable auto-deploy to production
+      # - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy:
+    name: Deploy to AppRunner
+    runs-on: ubuntu-latest
+    
+    # Use GitHub Environments for production approval
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+      url: ${{ steps.deployment.outputs.service_url }}
+    
+    permissions:
+      id-token: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            frontend/package-lock.json
+            infra/package-lock.json
+      
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+      
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+      
+      - name: Install infrastructure dependencies
+        working-directory: infra
+        run: npm ci
+      
+      - name: Build infrastructure
+        working-directory: infra
+        run: npm run build
+      
+      - name: CDK Diff
+        working-directory: infra
+        run: npx cdk diff AppStack-${{ steps.env.outputs.environment }} -c environment=${{ steps.env.outputs.environment }}
+      
+      - name: Deploy to AWS
+        working-directory: infra
+        run: npx cdk deploy AppStack-${{ steps.env.outputs.environment }} -c environment=${{ steps.env.outputs.environment }} --require-approval never
+      
+      - name: Get deployment info
+        id: deployment
+        working-directory: infra
+        run: |
+          SERVICE_URL=$(aws cloudformation describe-stacks \
+            --stack-name admin-app-${{ steps.env.outputs.environment }} \
+            --query 'Stacks[0].Outputs[?OutputKey==`ServiceUrl`].OutputValue' \
+            --output text)
+          echo "service_url=$SERVICE_URL" >> $GITHUB_OUTPUT
+      
+      - name: Deployment summary
+        run: |
+          echo "## Deployment Successful! 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ steps.env.outputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deployment.outputs.service_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployed at:** $(date)" >> $GITHUB_STEP_SUMMARY
