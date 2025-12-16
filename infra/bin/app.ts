@@ -19,7 +19,7 @@ const env = {
 new InfraStack(app, `InfraStack-${environment}`, {
   env,
   stackName: `admin-infra-${environment}`,
-  // GitHub repository for CI/CD
+  // GitHub repository for CI/CD - UPDATE THIS if your repo name is different
   githubRepo: 'yuichiroyamaji/serverless-admin-template',
 });
 

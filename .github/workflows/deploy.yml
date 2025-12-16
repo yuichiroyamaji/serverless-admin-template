@@ -52,6 +52,13 @@ jobs:
             frontend/package-lock.json
             infra/package-lock.json
       
+      - name: Debug GitHub context
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+      
       - name: Determine environment
         id: env
         run: |
@@ -67,6 +74,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GitHubActions
           aws-region: ${{ secrets.AWS_REGION }}
       
       - name: Install frontend dependencies

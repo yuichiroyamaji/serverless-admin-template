@@ -28,22 +28,28 @@ export class GitHubOidcRole extends Construct {
     const githubProvider = new iam.OpenIdConnectProvider(this, 'GitHubProvider', {
       url: 'https://token.actions.githubusercontent.com',
       clientIds: ['sts.amazonaws.com'],
+      thumbprints: [
+        '6938fd4d98bab03faadb97b34396831e3780aea1',
+        '1c58a3a8518e8759bf075b76b750d4f2df264fcd'
+      ],
     });
+
+
 
     // Create IAM role that GitHub Actions can assume
     this.role = new iam.Role(this, 'GitHubActionsRole', {
-      assumedBy: new iam.WebIdentityPrincipal(
+      roleName: 'github-oidc-deploy-role',
+      assumedBy: new iam.FederatedPrincipal(
         githubProvider.openIdConnectProviderArn,
         {
           StringEquals: {
             'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
           },
           StringLike: {
-            'token.actions.githubusercontent.com:sub': branches.map(
-              (branch) => `repo:${props.githubRepo}:ref:refs/heads/${branch}`
-            ),
+            'token.actions.githubusercontent.com:sub': `repo:${props.githubRepo}:*`,
           },
-        }
+        },
+        'sts:AssumeRoleWithWebIdentity'
       ),
       description: 'Role for GitHub Actions to deploy via CDK',
       maxSessionDuration: cdk.Duration.hours(1),
