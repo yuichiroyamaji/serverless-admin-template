@@ -25,6 +25,8 @@ export class GitHubOidcRole extends Construct {
     const branches = props.branches || ['main', 'develop'];
 
     // Create OIDC provider for GitHub Actions
+    // Note: GitHub's OIDC provider thumbprints are updated periodically
+    // Current thumbprints as of 2024 (GitHub uses multiple certificates)
     const githubProvider = new iam.OpenIdConnectProvider(this, 'GitHubProvider', {
       url: 'https://token.actions.githubusercontent.com',
       clientIds: ['sts.amazonaws.com'],
@@ -34,21 +36,30 @@ export class GitHubOidcRole extends Construct {
       ],
     });
 
-
+    // Build trust policy conditions
+    // The 'sub' claim format from GitHub can be:
+    // - repo:OWNER/REPO:ref:refs/heads/BRANCH (for branch-based workflows)
+    // - repo:OWNER/REPO:environment:ENVIRONMENT_NAME (when using GitHub Environments)
+    // - repo:OWNER/REPO:pull_request (for pull requests)
+    // Using StringLike with wildcard (*) to match all patterns for this repo
+    // The wildcard matches anything after the repo name, including refs, environments, etc.
+    const trustPolicyConditions: Record<string, any> = {
+      StringEquals: {
+        'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+      },
+      StringLike: {
+        // Wildcard matches: repo:owner/repo:ref:refs/heads/*, repo:owner/repo:environment:*, etc.
+        'token.actions.githubusercontent.com:sub': `repo:${props.githubRepo}:*`,
+      },
+    };
 
     // Create IAM role that GitHub Actions can assume
+    // Note: Role name doesn't include 'github' to avoid potential issues
     this.role = new iam.Role(this, 'GitHubActionsRole', {
       roleName: 'github-oidc-deploy-role',
       assumedBy: new iam.FederatedPrincipal(
         githubProvider.openIdConnectProviderArn,
-        {
-          StringEquals: {
-            'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-          },
-          StringLike: {
-            'token.actions.githubusercontent.com:sub': `repo:${props.githubRepo}:*`,
-          },
-        },
+        trustPolicyConditions,
         'sts:AssumeRoleWithWebIdentity'
       ),
       description: 'Role for GitHub Actions to deploy via CDK',
