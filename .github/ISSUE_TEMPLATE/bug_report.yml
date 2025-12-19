@@ -1,0 +1,91 @@
+name: 🐛 バグ修正
+description: バグ修正リクエスト
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        以下の情報を記入してください。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: ◆バグの説明
+      description: バグの内容を詳しく説明してください
+      placeholder: 例）受注取込み時のAPI実行前のBLパラメータチェックでエラー
+    validations:
+      required: true
+
+  - type: textarea
+    id: condition
+    attributes:
+      label: ◆発生条件
+      description: バグの発生条件を詳しく説明してください
+      placeholder: |
+        【環境】STG環境
+        【クライアント】花王
+        【ショップ】楽天ショップ
+        【条件】定期注文の時のみ発生
+        例）調査中
+    validations:
+      required: true
+
+  - type: textarea
+    id: cause
+    attributes:
+      label: ◆原因
+      description: バグの原因を詳しく説明してください
+      placeholder: |
+        ※現時点でわかっている範囲で記述
+        例）新規登録手順書にて記載が漏れていたため、shop_account_col1に値が登録されていない
+        例）調査中
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: ◆再現手順
+      description: バグを再現するための手順を記述してください
+      placeholder: |
+        例）
+        1. '...' に移動
+        2. '....' をクリック
+        3. '....' までスクロール
+        4. エラーが発生
+        例）調査中
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ◆本来期待される動作
+      description: 本来期待される動作を記述してください
+      placeholder: 例）定期注文の場合でも値が渡され正常終了する
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: ◆対応内容
+      description: バグを修正するための対応内容を記述してください
+      placeholder: |
+        ※現時点でわかっている範囲で記述
+        例）「ShopAccountCol1」の値をショップモール固有TBLに登録する
+        例）検討中
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: ◆影響
+      description: 対応内容を実施した場合の考えられる影響を記述してください
+      placeholder: |
+        ※現時点でわかっている範囲で記述
+        例）他モールの「ShopAccountCol1」はショップモール固有TBLに登録更新されているため影響はない
+        例）調査中
+    validations:
+      required: true

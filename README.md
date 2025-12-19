@@ -226,4 +226,103 @@ See [frontend/LICENSE](./frontend/LICENSE)
 **Ready to deploy?** Check out the [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)! 🚀
 
 ---
-# Test OIDC fix
+
+## 📋 Using This Repository as a Template
+
+When using this repository as a template for a new project, update the following files and values:
+
+### 1. GitHub Repository Configuration
+
+**File:** `infra/bin/app.ts`
+
+```typescript
+// Line 23: Update with your GitHub repository name
+githubRepo: 'your-username/your-repo-name',
+```
+
+**File:** `.github/workflows/deploy.yml`
+
+```yaml
+# Line 110: Update the expected repository format in debug output (optional)
+echo "Expected format: repo:your-username/your-repo-name:*"
+```
+
+### 2. AWS Stack Names
+
+**File:** `infra/bin/app.ts`
+
+```typescript
+// Line 21: Update infrastructure stack name prefix
+stackName: `your-project-infra-${environment}`,
+
+// Line 29: Update application stack name prefix
+stackName: `your-project-app-${environment}`,
+```
+
+**File:** `.github/workflows/deploy.yml`
+
+```yaml
+# Line 171: Update CloudFormation stack name to match your app stack name
+--stack-name your-project-app-${{ steps.env.outputs.environment }} \
+```
+
+### 3. Application Configuration
+
+**File:** `infra/config/app-config.ts`
+
+```typescript
+// Lines 36 & 54: Update email for CloudWatch alarms
+alarmEmail: 'your-email@example.com',
+
+// Lines 34 & 52: Add custom domain (optional)
+customDomain: 'admin.yourdomain.com',
+
+// Lines 41-45 & 59-61: Add environment variables
+environmentVariables: {
+  DATABASE_URL: 'your-database-url',
+  API_KEY: 'your-api-key',
+  // Add your environment variables here
+},
+```
+
+### 4. Frontend Package Name (Optional)
+
+**File:** `frontend/package.json`
+
+```json
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  // ... rest of the file
+}
+```
+
+### 5. GitHub Secrets Setup
+
+After deploying InfraStack, set these secrets in your GitHub repository:
+
+**Settings → Secrets and variables → Actions**
+
+1. **AWS_ROLE_ARN**: Copy from InfraStack deployment output
+2. **AWS_REGION**: Your AWS region (e.g., `us-east-1`, `ap-northeast-1`)
+
+### Quick Setup Checklist
+
+- [ ] Update GitHub repository name in `infra/bin/app.ts`
+- [ ] Update stack names in `infra/bin/app.ts` (2 places)
+- [ ] Update stack name in `.github/workflows/deploy.yml`
+- [ ] Update email in `infra/config/app-config.ts` (2 places: dev & prod)
+- [ ] Add environment variables in `infra/config/app-config.ts` (if needed)
+- [ ] Update frontend package name in `frontend/package.json` (optional)
+- [ ] Deploy InfraStack: `cd infra && npx cdk deploy InfraStack-dev -c environment=dev`
+- [ ] Set GitHub secrets: `AWS_ROLE_ARN` and `AWS_REGION`
+- [ ] Deploy AppStack: `cd infra && npm run deploy:dev`
+
+### Important Notes
+
+- **Stack names** must be unique within your AWS account and region
+- **GitHub repository name** must match exactly (case-sensitive) for OIDC to work
+- **Email address** is required for CloudWatch alarm notifications
+- After changing stack names, update the workflow file accordingly
+
+---

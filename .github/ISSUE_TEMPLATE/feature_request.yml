@@ -1,0 +1,57 @@
+name: 💡 機能追加
+description: 新規機能追加リクエスト
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        以下の情報を記入してください。
+
+  - type: textarea
+    id: background
+    attributes:
+      label: ◆新規機能が必要な背景
+      description: 新規機能が必要な背景（解決したい課題）を説明してください
+      placeholder: 例）〜の作業に手動で対応するのに時間がかかっているため、自動化したい
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: ◆解消方法
+      description: 新規機能にてどのように解消するかを説明してください
+      placeholder: 例）データパッチをプログラム化して定期実行する
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-design
+    attributes:
+      label: ◆設計概要
+      description: プログラム設計の概要を記述してください
+      placeholder: |
+        例）
+        1. 「/sample」ルートにて新規ページ作成…
+        2. 「feature/sample」を作成し、構成ファイルを作成
+        3. 既存component「～」を使用して…
+        または「検討中」など
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: ◆回避策
+      description: 新規機能がリリースされるまでの回避策を記述してください
+      placeholder: 例）〜の作業を日次手動で対応する
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: ◆その他の情報
+      description: その他の情報やメモなどがあれば記述してください
+    validations:
+      required: false
