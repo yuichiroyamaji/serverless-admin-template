@@ -1,0 +1,93 @@
+{
+  "id": "5",
+  "name": "Emma Thompson",
+  "email": "emma.thompson@company.com",
+  "profilePhoto": "engineer-5.svg",
+  "position": "Mobile Developer",
+  "department": "Engineering",
+  "skills": [
+    {
+      "language": "React Native",
+      "experienceYears": 3,
+      "proficiencyLevel": "Advanced"
+    },
+    {
+      "language": "Swift",
+      "experienceYears": 4,
+      "proficiencyLevel": "Advanced"
+    },
+    {
+      "language": "Kotlin",
+      "experienceYears": 2,
+      "proficiencyLevel": "Intermediate"
+    },
+    {
+      "language": "JavaScript",
+      "experienceYears": 5,
+      "proficiencyLevel": "Advanced"
+    },
+    {
+      "language": "TypeScript",
+      "experienceYears": 2,
+      "proficiencyLevel": "Intermediate"
+    }
+  ],
+  "previousProjects": [
+    {
+      "id": "p9",
+      "name": "Fitness Tracking App",
+      "description": "Cross-platform fitness and health tracking application",
+      "technologies": ["React Native", "Redux", "Firebase"],
+      "startDate": "2023-04-01",
+      "endDate": "2023-12-15",
+      "role": "Mobile Developer",
+      "status": "Completed"
+    },
+    {
+      "id": "p10",
+      "name": "Banking App iOS",
+      "description": "Native iOS banking application",
+      "technologies": ["Swift", "Core Data", "Keychain"],
+      "startDate": "2022-07-01",
+      "endDate": "2023-03-31",
+      "role": "iOS Developer",
+      "status": "Completed"
+    }
+  ],
+  "currentAssignments": [
+    {
+      "id": "a8",
+      "project": {
+        "id": "cp8",
+        "name": "Social Media App",
+        "description": "New social media platform for mobile",
+        "technologies": ["React Native", "TypeScript", "GraphQL"],
+        "startDate": "2026-03-01",
+        "endDate": "2026-11-15",
+        "role": "Lead Mobile Developer",
+        "status": "In Progress"
+      },
+      "startDate": "2026-03-01",
+      "endDate": "2026-11-15",
+      "allocation": 90,
+      "status": "Active"
+    },
+    {
+      "id": "a9",
+      "project": {
+        "id": "cp9",
+        "name": "App Performance Audit",
+        "description": "Performance optimization for existing mobile apps",
+        "technologies": ["React Native", "Swift", "Kotlin"],
+        "startDate": "2026-06-10",
+        "endDate": "2026-07-25",
+        "role": "Performance Engineer",
+        "status": "Upcoming"
+      },
+      "startDate": "2026-06-10",
+      "endDate": "2026-07-25",
+      "allocation": 10,
+      "status": "Upcoming"
+    }
+  ]
+}
