@@ -6,10 +6,9 @@ import TimelineChart from "./TimelineChart";
 
 interface TimelineColumnProps {
   assignments: Assignment[];
-  engineerId: string;
 }
 
-export default function TimelineColumn({ assignments, engineerId }: TimelineColumnProps) {
+export default function TimelineColumn({ assignments }: TimelineColumnProps) {
   // Generate 12 months starting from current month
   const timelineMonths = useMemo((): TimelineMonth[] => {
     const months = [];

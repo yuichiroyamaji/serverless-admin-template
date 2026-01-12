@@ -49,7 +49,6 @@ export default function EngineerRow({ engineer }: EngineerRowProps) {
       <div className="flex items-center">
         <TimelineColumn 
           assignments={engineer.currentAssignments}
-          engineerId={engineer.id}
         />
       </div>
     </div>
