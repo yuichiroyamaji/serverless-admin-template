@@ -31,7 +31,7 @@ export default function TimelineColumn({ assignments, engineerId }: TimelineColu
     <div className="w-full">
       {/* Timeline Header with Month Labels */}
       <div className="flex border-b border-gray-200 dark:border-gray-700 pb-2 mb-3">
-        {timelineMonths.map((month, index) => (
+        {timelineMonths.map((month) => (
           <div
             key={`${month.month}-${month.year}`}
             className={`flex-1 min-w-[100px] text-center ${
@@ -55,7 +55,6 @@ export default function TimelineColumn({ assignments, engineerId }: TimelineColu
         <TimelineChart 
           assignments={assignments}
           months={timelineMonths}
-          engineerId={engineerId}
         />
       </div>
 

@@ -4,11 +4,20 @@ import { Engineer, Project, SkillDefinition } from '../types';
  * @description Load all engineers data from JSON files
  * @returns Promise that resolves to array of engineers with basic info
  */
+interface EngineerBasic {
+  id: string;
+  name: string;
+  email: string;
+  profilePhoto: string;
+  position: string;
+  department: string;
+}
+
 export const loadEngineers = async (): Promise<Engineer[]> => {
   try {
     // In development, we'll use dynamic imports to load JSON data
     const engineersModule = await import('../data/engineers.json');
-    const engineers = engineersModule.default as any[];
+    const engineers = engineersModule.default as EngineerBasic[];
     // The basic engineers.json only has basic info, detailed info comes from individual files
     return engineers.map(engineer => ({
       ...engineer,
@@ -31,8 +40,8 @@ export const loadEngineerDetails = async (engineerId: string): Promise<Engineer 
   try {
     // Use dynamic imports for JSON data
     const engineerModule = await import(`../data/engineer-${engineerId}.json`);
-    const engineer = engineerModule.default as any;
-    return engineer as Engineer;
+    const engineer = engineerModule.default as Engineer;
+    return engineer;
   } catch (error) {
     console.error(`Error loading engineer ${engineerId}:`, error);
     return null;
@@ -66,8 +75,8 @@ export const loadAllEngineersWithDetails = async (): Promise<Engineer[]> => {
 export const loadProjects = async (): Promise<Project[]> => {
   try {
     const projectsModule = await import('../data/projects.json');
-    const projects = projectsModule.default as any[];
-    return projects as Project[];
+    const projects = projectsModule.default as Project[];
+    return projects;
   } catch (error) {
     console.error('Error loading projects:', error);
     return [];
@@ -81,8 +90,8 @@ export const loadProjects = async (): Promise<Project[]> => {
 export const loadSkills = async (): Promise<SkillDefinition[]> => {
   try {
     const skillsModule = await import('../data/skills.json');
-    const skills = skillsModule.default as any[];
-    return skills as SkillDefinition[];
+    const skills = skillsModule.default as SkillDefinition[];
+    return skills;
   } catch (error) {
     console.error('Error loading skills:', error);
     return [];
@@ -112,18 +121,23 @@ export const getProfilePhotoUrl = (profilePhoto: string): string => {
  * @param engineer - Engineer object to validate
  * @returns Boolean indicating if the engineer data is valid
  */
-export const validateEngineerData = (engineer: any): engineer is Engineer => {
+export const validateEngineerData = (engineer: unknown): engineer is Engineer => {
+  if (!engineer || typeof engineer !== 'object') {
+    return false;
+  }
+  
+  const e = engineer as Record<string, unknown>;
+  
   return (
-    engineer &&
-    typeof engineer.id === 'string' &&
-    typeof engineer.name === 'string' &&
-    typeof engineer.email === 'string' &&
-    typeof engineer.profilePhoto === 'string' &&
-    typeof engineer.position === 'string' &&
-    typeof engineer.department === 'string' &&
-    Array.isArray(engineer.skills) &&
-    Array.isArray(engineer.previousProjects) &&
-    Array.isArray(engineer.currentAssignments)
+    typeof e.id === 'string' &&
+    typeof e.name === 'string' &&
+    typeof e.email === 'string' &&
+    typeof e.profilePhoto === 'string' &&
+    typeof e.position === 'string' &&
+    typeof e.department === 'string' &&
+    Array.isArray(e.skills) &&
+    Array.isArray(e.previousProjects) &&
+    Array.isArray(e.currentAssignments)
   );
 };
 
@@ -132,7 +146,7 @@ export const validateEngineerData = (engineer: any): engineer is Engineer => {
  * @param rawData - Raw engineer data from JSON
  * @returns Validated and transformed engineer data
  */
-export const transformEngineerData = (rawData: any): Engineer | null => {
+export const transformEngineerData = (rawData: unknown): Engineer | null => {
   if (!validateEngineerData(rawData)) {
     console.warn('Invalid engineer data:', rawData);
     return null;

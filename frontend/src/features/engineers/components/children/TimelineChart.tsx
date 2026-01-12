@@ -6,10 +6,9 @@ import { Assignment, TimelineMonth, TimelineBar } from "../../types";
 interface TimelineChartProps {
   assignments: Assignment[];
   months: TimelineMonth[];
-  engineerId: string;
 }
 
-export default function TimelineChart({ assignments, months, engineerId }: TimelineChartProps) {
+export default function TimelineChart({ assignments, months }: TimelineChartProps) {
   const [hoveredBar, setHoveredBar] = useState<string | null>(null);
 
   // Convert assignments to timeline bars
@@ -18,7 +17,7 @@ export default function TimelineChart({ assignments, months, engineerId }: Timel
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
 
-    return assignments.map((assignment, index) => {
+    return assignments.map((assignment) => {
       const startDate = new Date(assignment.startDate);
       const endDate = new Date(assignment.endDate);
 
@@ -68,7 +67,7 @@ export default function TimelineChart({ assignments, months, engineerId }: Timel
         height: getBarHeight(assignment.allocation)
       };
     }).filter(bar => bar.startMonth <= 11 && bar.endMonth >= 0); // Only show bars that are visible
-  }, [assignments, months]);
+  }, [assignments]);
 
   // Group overlapping bars for stacking
   const stackedBars = useMemo(() => {
@@ -78,7 +77,7 @@ export default function TimelineChart({ assignments, months, engineerId }: Timel
       let placed = false;
       
       // Try to place in existing stack
-      for (let stack of stacks) {
+      for (const stack of stacks) {
         const hasOverlap = stack.some(existingBar => 
           !(bar.endMonth < existingBar.startMonth || bar.startMonth > existingBar.endMonth)
         );
@@ -122,7 +121,7 @@ export default function TimelineChart({ assignments, months, engineerId }: Timel
     <div className="relative">
       {/* Timeline Grid Background */}
       <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/20">
-        {months.map((month, index) => (
+        {months.map((month) => (
           <div
             key={`${month.month}-${month.year}-grid`}
             className={`flex-1 min-w-[100px] h-20 border-r border-gray-200 dark:border-gray-700 last:border-r-0 ${
