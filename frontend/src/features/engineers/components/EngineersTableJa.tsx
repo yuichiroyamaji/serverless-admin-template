@@ -3,10 +3,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Engineer } from "../types";
 import { loadAllEngineersWithDetails } from "../services/engineersDataService";
-import SearchBar, { SearchBarRef } from "./SearchBar";
-import EngineerRow from "./children/EngineerRow";
+import SearchBarJa, { SearchBarRef } from "./SearchBarJa";
+import EngineerRowJa from "./children/EngineerRowJa";
 
-export default function EngineersTable() {
+export default function EngineersTableJa() {
   const [engineers, setEngineers] = useState<Engineer[]>([]);
   const [filteredEngineers, setFilteredEngineers] = useState<Engineer[]>([]);
   const [availableSkills, setAvailableSkills] = useState<string[]>([]);
@@ -47,7 +47,7 @@ export default function EngineersTable() {
         setAvailableSkills(Array.from(skillsSet).sort());
         setAvailableProjects(Array.from(projectsSet).sort());
       } catch (err) {
-        setError('Failed to load engineers data');
+        setError('エンジニアデータの読み込みに失敗しました');
         console.error('Error fetching engineers:', err);
       } finally {
         setLoading(false);
@@ -93,7 +93,7 @@ export default function EngineersTable() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600 dark:text-gray-400">Loading engineers...</div>
+        <div className="text-gray-600 dark:text-gray-400">エンジニアを読み込み中...</div>
       </div>
     );
   }
@@ -112,15 +112,15 @@ export default function EngineersTable() {
       <div className="bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Search Engineers
+            エンジニア検索
           </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Find engineers by their programming skills or project experience
+            プログラミングスキルやプロジェクト経験でエンジニアを検索
           </p>
         </div>
         
         <div className="p-6 bg-gray-50 dark:bg-gray-800/20">
-          <SearchBar 
+          <SearchBarJa 
             ref={searchBarRef} 
             onSearch={handleSearch}
             availableSkills={availableSkills}
@@ -131,9 +131,9 @@ export default function EngineersTable() {
           <div className="mt-4 flex items-center justify-between">
             <div className="text-sm text-gray-600 dark:text-gray-400">
               {filteredEngineers.length === engineers.length ? (
-                `Showing all ${engineers.length} engineers`
+                `全${engineers.length}名のエンジニアを表示中`
               ) : (
-                `Found ${filteredEngineers.length} of ${engineers.length} engineers`
+                `${engineers.length}名中${filteredEngineers.length}名のエンジニアが見つかりました`
               )}
             </div>
             {filteredEngineers.length !== engineers.length && (
@@ -141,7 +141,7 @@ export default function EngineersTable() {
                 onClick={handleClearSearch}
                 className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
               >
-                Clear search
+                検索をクリア
               </button>
             )}
           </div>
@@ -152,10 +152,10 @@ export default function EngineersTable() {
       <div className="bg-white dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Engineers Overview
+            エンジニア一覧
           </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Team members with their skills, projects, and current assignments
+            スキル、プロジェクト、現在の割り当てを含むチームメンバー
           </p>
         </div>
 
@@ -165,21 +165,21 @@ export default function EngineersTable() {
             {/* Table Header */}
             <div className="grid grid-cols-[150px_80px_180px_200px_180px_1fr] gap-4 border-b border-gray-200 px-6 py-4 bg-gray-50 dark:bg-gray-800/20 dark:border-gray-700">
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
-                Name
+                名前
               </div>
               <div className="text-center text-sm font-semibold text-gray-800 dark:text-white/90">
               </div>
               <div className="text-center text-sm font-semibold text-gray-800 dark:text-white/90">
-                Rating & Reviews
+                評価とレビュー
               </div>
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
-                Programming Languages
+                プログラミング言語
               </div>
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
-                Projects
+                プロジェクト
               </div>
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
-                Timeline (12 Months)
+                タイムライン（12ヶ月）
               </div>
             </div>
 
@@ -194,11 +194,11 @@ export default function EngineersTable() {
                       </svg>
                     </div>
                     <div className="text-gray-600 dark:text-gray-400 font-medium">
-                      {engineers.length === 0 ? 'No engineers found' : 'No engineers match your search criteria'}
+                      {engineers.length === 0 ? 'エンジニアが見つかりませんでした' : '検索条件に一致するエンジニアが見つかりませんでした'}
                     </div>
                     {engineers.length > 0 && (
                       <div className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-                        Try adjusting your search terms or clear the search to see all engineers
+                        検索条件を調整するか、検索をクリアしてすべてのエンジニアを表示してください
                       </div>
                     )}
                   </div>
@@ -206,7 +206,7 @@ export default function EngineersTable() {
               ) : (
                 <div className="space-y-0">
                   {filteredEngineers.map((engineer) => (
-                    <EngineerRow key={engineer.id} engineer={engineer} />
+                    <EngineerRowJa key={engineer.id} engineer={engineer} />
                   ))}
                 </div>
               )}
@@ -217,3 +217,4 @@ export default function EngineersTable() {
     </div>
   );
 }
+

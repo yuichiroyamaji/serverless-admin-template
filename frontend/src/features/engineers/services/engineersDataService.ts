@@ -1,4 +1,10 @@
 import { Engineer, EngineerRating, Project, SkillDefinition } from '../types';
+// Static imports for better performance and reliability
+import engineer1Data from '../data/engineer-1.json';
+import engineer2Data from '../data/engineer-2.json';
+import engineer3Data from '../data/engineer-3.json';
+import engineer4Data from '../data/engineer-4.json';
+import engineer5Data from '../data/engineer-5.json';
 
 /**
  * @description Load all engineers data from JSON files
@@ -39,39 +45,26 @@ export const loadEngineers = async (): Promise<Engineer[]> => {
 };
 
 /**
- * @description Load detailed engineer data by ID
- * @param engineerId - The ID of the engineer to load
- * @returns Promise that resolves to detailed engineer data
- */
-export const loadEngineerDetails = async (engineerId: string): Promise<Engineer | null> => {
-  try {
-    // Use dynamic imports for JSON data
-    const engineerModule = await import(`../data/engineer-${engineerId}.json`);
-    const engineer = engineerModule.default as Engineer;
-    return engineer;
-  } catch (error) {
-    console.error(`Error loading engineer ${engineerId}:`, error);
-    return null;
-  }
-};
-
-/**
  * @description Load all engineers with detailed information
  * @returns Promise that resolves to array of engineers with full details
+ * Using static imports for immediate synchronous loading - much faster than dynamic imports
  */
 export const loadAllEngineersWithDetails = async (): Promise<Engineer[]> => {
   try {
-    const basicEngineers = await loadEngineers();
-    const detailedEngineers = await Promise.all(
-      basicEngineers.map(async (engineer) => {
-        const details = await loadEngineerDetails(engineer.id);
-        return details || engineer;
-      })
-    );
-    return detailedEngineers;
+    // Use static imports - these are bundled at build time and load instantly
+    // This is much faster and more reliable than dynamic imports
+    // Return as Promise for consistency with the API
+    return Promise.resolve([
+      engineer1Data as Engineer,
+      engineer2Data as Engineer,
+      engineer3Data as Engineer,
+      engineer4Data as Engineer,
+      engineer5Data as Engineer
+    ]);
   } catch (error) {
     console.error('Error loading detailed engineers:', error);
-    return [];
+    // Fallback to basic engineers if detail loading fails
+    return await loadEngineers();
   }
 };
 

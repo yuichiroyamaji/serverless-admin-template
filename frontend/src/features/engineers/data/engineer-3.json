@@ -99,6 +99,7 @@
         "reviewerName": "Alex Thompson",
         "rating": 5,
         "comment": "Exceptional backend architecture and database optimization skills.",
+        "commentJa": "卓越したバックエンドアーキテクチャとデータベース最適化スキル。",
         "date": "2024-01-05",
         "projectId": "p5"
       },
@@ -107,6 +108,7 @@
         "reviewerName": "Lisa Wang",
         "rating": 4,
         "comment": "Reliable and efficient. Great at solving complex problems.",
+        "commentJa": "信頼性が高く効率的。複雑な問題解決に優れています。",
         "date": "2023-12-01"
       }
     ]

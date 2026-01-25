@@ -22,6 +22,7 @@ export interface Review {
   reviewerName: string;
   rating: number; // 1-5 stars
   comment: string;
+  commentJa?: string; // Optional Japanese translation of comment
   date: string;
   projectId?: string; // Optional reference to project
 }

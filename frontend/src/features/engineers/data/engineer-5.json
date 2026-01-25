@@ -99,6 +99,7 @@
         "reviewerName": "Tom Wilson",
         "rating": 4,
         "comment": "Great mobile development skills. Apps are always polished.",
+        "commentJa": "優れたモバイル開発スキル。アプリは常に洗練されています。",
         "date": "2024-01-12",
         "projectId": "p9"
       },
@@ -107,6 +108,7 @@
         "reviewerName": "Anna Davis",
         "rating": 5,
         "comment": "Excellent React Native expertise and user experience focus.",
+        "commentJa": "優れたReact Nativeの専門知識とユーザー体験への焦点。",
         "date": "2023-12-05"
       }
     ]

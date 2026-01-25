@@ -82,6 +82,7 @@
         "reviewerName": "Sarah Johnson",
         "rating": 4,
         "comment": "Great UI/UX skills and attention to detail.",
+        "commentJa": "優れたUI/UXスキルと細部への配慮。",
         "date": "2024-01-10"
       },
       {
@@ -89,6 +90,7 @@
         "reviewerName": "Mike Chen",
         "rating": 5,
         "comment": "Excellent CSS and design implementation.",
+        "commentJa": "優れたCSSとデザイン実装。",
         "date": "2023-11-15",
         "projectId": "p3"
       }

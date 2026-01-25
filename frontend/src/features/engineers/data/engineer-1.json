@@ -99,6 +99,7 @@
         "reviewerName": "John Smith",
         "rating": 5,
         "comment": "Excellent technical leadership and code quality. Always delivers on time.",
+        "commentJa": "優れた技術リーダーシップとコード品質。常に期限を守ります。",
         "date": "2024-01-15",
         "projectId": "p1"
       },
@@ -107,6 +108,7 @@
         "reviewerName": "Maria Garcia",
         "rating": 4,
         "comment": "Great problem-solving skills and team collaboration.",
+        "commentJa": "優れた問題解決能力とチーム協力。",
         "date": "2023-12-20"
       },
       {
@@ -114,6 +116,7 @@
         "reviewerName": "David Wilson",
         "rating": 5,
         "comment": "Outstanding full-stack development skills. Highly recommended.",
+        "commentJa": "卓越したフルスタック開発スキル。強くお勧めします。",
         "date": "2023-11-10",
         "projectId": "p2"
       }
