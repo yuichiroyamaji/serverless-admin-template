@@ -5,6 +5,7 @@ import { Engineer } from "../../types";
 import EngineerPhoto from "./EngineerPhoto";
 import SkillsList from "./SkillsList";
 import ProjectsList from "./ProjectsList";
+import RatingReviews from "./RatingReviews";
 import TimelineColumn from "./TimelineColumn";
 
 interface EngineerRowProps {
@@ -13,7 +14,7 @@ interface EngineerRowProps {
 
 export default function EngineerRow({ engineer }: EngineerRowProps) {
   return (
-    <div className="grid grid-cols-[150px_80px_200px_250px_1fr] gap-4 py-4 border-b border-gray-100 last:border-b-0 dark:border-gray-800">
+    <div className="grid grid-cols-[150px_80px_180px_200px_180px_1fr] gap-4 py-4 border-b border-gray-100 last:border-b-0 dark:border-gray-800">
       {/* Name Column */}
       <div className="flex flex-col justify-center">
         <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
@@ -35,6 +36,14 @@ export default function EngineerRow({ engineer }: EngineerRowProps) {
         />
       </div>
 
+      {/* Rating & Reviews Column */}
+      <div className="flex justify-center items-center relative">
+        <RatingReviews 
+          rating={engineer.rating}
+          engineerName={engineer.name}
+        />
+      </div>
+
       {/* Programming Languages Column */}
       <div className="flex items-center">
         <SkillsList skills={engineer.skills} />
@@ -49,6 +58,7 @@ export default function EngineerRow({ engineer }: EngineerRowProps) {
       <div className="flex items-center">
         <TimelineColumn 
           assignments={engineer.currentAssignments}
+          engineerId={engineer.id}
         />
       </div>
     </div>

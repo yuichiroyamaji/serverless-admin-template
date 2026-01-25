@@ -72,5 +72,26 @@
       "allocation": 100,
       "status": "Active"
     }
-  ]
+  ],
+  "rating": {
+    "averageRating": 4.2,
+    "totalReviews": 8,
+    "reviews": [
+      {
+        "id": "r4",
+        "reviewerName": "Sarah Johnson",
+        "rating": 4,
+        "comment": "Great UI/UX skills and attention to detail.",
+        "date": "2024-01-10"
+      },
+      {
+        "id": "r5",
+        "reviewerName": "Mike Chen",
+        "rating": 5,
+        "comment": "Excellent CSS and design implementation.",
+        "date": "2023-11-15",
+        "projectId": "p3"
+      }
+    ]
+  }
 }

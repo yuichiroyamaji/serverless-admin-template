@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Engineers Dashboard is a comprehensive React component built with Next.js 15 App Router that displays engineering team information in a structured 5-column table format. The page features a horizontally scrollable timeline showing 12 months from the present month forward. The design leverages the existing TailAdmin template styling and integrates ApexCharts for timeline visualizations within the scrollable timeline column.
+The Engineers Dashboard is a comprehensive React component built with Next.js 15 App Router that displays engineering team information in a structured 6-column table format. The page features a horizontally scrollable timeline showing 12 months from the present month forward, plus a rating and reviews column for performance evaluation. The design leverages the existing TailAdmin template styling and integrates ApexCharts for timeline visualizations within the scrollable timeline column.
 
 ## Architecture
 
@@ -11,7 +11,7 @@ The Engineers Dashboard follows a modular architecture with clear separation of 
 - **Page Component**: Next.js page component at `app/(admin)/(others-pages)/engineers/page.tsx`
 - **Feature Module**: Self-contained engineers feature at `features/engineers/` with all related components and logic
 - **Data Layer**: JSON data files stored in `features/engineers/data/` for engineer information
-- **UI Components**: Reusable table components optimized for the 5-column layout
+- **UI Components**: Reusable table components optimized for the 6-column layout
 - **Chart Integration**: ApexCharts integration for timeline visualizations within the scrollable timeline column
 
 ## Components and Interfaces
@@ -24,7 +24,7 @@ The Engineers Dashboard follows a modular architecture with clear separation of 
    - Integrates with existing admin layout
 
 2. **EngineersTable** (`features/engineers/components/EngineersTable.tsx`)
-   - Main table component with 5 columns: Name, Photo, Programming Languages, Projects, Timeline
+   - Main table component with 6 columns: Name, Photo, Programming Languages, Projects, Rating & Reviews, Timeline
    - Implements horizontal scrolling for the timeline column
    - Responsive table layout with fixed column widths
    - **Parent component called directly from page.tsx**
@@ -36,7 +36,7 @@ The Engineers Dashboard follows a modular architecture with clear separation of 
 
 4. **EngineerRow** (`features/engineers/components/children/EngineerRow.tsx`)
    - Individual table row component for each engineer
-   - Handles data display across all 5 columns
+   - Handles data display across all 6 columns
    - Manages row-level interactions and state
 
 5. **EngineerPhoto** (`features/engineers/components/children/EngineerPhoto.tsx`)
@@ -54,12 +54,18 @@ The Engineers Dashboard follows a modular architecture with clear separation of 
    - Compact display with tooltips for full project details
    - Chronological ordering with visual indicators
 
-8. **TimelineColumn** (`features/engineers/components/children/TimelineColumn.tsx`)
+8. **RatingReviews** (`features/engineers/components/children/RatingReviews.tsx`)
+   - Displays engineer rating with 5-star system
+   - Shows review count and average rating
+   - Interactive star display with hover states
+   - Compact layout optimized for table display
+
+9. **TimelineColumn** (`features/engineers/components/children/TimelineColumn.tsx`)
    - 12-month timeline display with horizontal scrolling
    - Month headers from current month to 12 months forward
    - Container for individual engineer timeline charts
 
-9. **TimelineChart** (`features/engineers/components/children/TimelineChart.tsx`)
+10. **TimelineChart** (`features/engineers/components/children/TimelineChart.tsx`)
    - Individual timeline chart for each engineer's assignments
    - Gantt-style bars with project names displayed on bars
    - Variable bar heights based on allocation percentages
@@ -68,14 +74,14 @@ The Engineers Dashboard follows a modular architecture with clear separation of 
 
 ### Search Services
 
-10. **SearchService** (`features/engineers/services/searchService.ts`)
+11. **SearchService** (`features/engineers/services/searchService.ts`)
    - Implements search logic for filtering engineers
    - Handles programming language and project name matching
    - Provides search result highlighting functionality
 
 ### Data Services
 
-11. **EngineersDataService** (`features/engineers/services/engineersDataService.ts`)
+12. **EngineersDataService** (`features/engineers/services/engineersDataService.ts`)
    - Loads engineer data from JSON files
    - Handles data transformation and validation
    - Provides typed data access methods
@@ -105,6 +111,22 @@ interface Engineer {
   skills: ProgrammingSkill[];
   previousProjects: Project[];
   currentAssignments: Assignment[];
+  rating: EngineerRating;
+}
+
+interface EngineerRating {
+  averageRating: number; // 0-5 stars
+  totalReviews: number;
+  reviews: Review[];
+}
+
+interface Review {
+  id: string;
+  reviewerName: string;
+  rating: number; // 1-5 stars
+  comment: string;
+  date: string;
+  projectId?: string; // Optional reference to project
 }
 
 interface ProgrammingSkill {
@@ -158,14 +180,41 @@ interface TimelineMonth {
 4. **Projects Column** (250px fixed width)
    - Previous project list
    - Expandable/collapsible for details
+
+5. **Rating & Reviews Column** (180px fixed width)
+   - 5-star rating display
+   - Average rating score (e.g., 4.2/5)
+   - Total review count (e.g., "12 reviews")
+   - Interactive star visualization
    
-5. **Timeline Column** (1200px+ width, horizontally scrollable)
+6. **Timeline Column** (1200px+ width, horizontally scrollable)
    - 12 month sub-columns (100px each)
    - Gantt-style assignment bars with project names
    - Bar heights proportional to allocation percentages (10%-100% allocation)
    - Occupied percentage displayed on each bar
    - Horizontal scroll bar for navigation
    - Stacked bars for overlapping project assignments
+
+### Rating & Reviews Specifications
+
+**Rating Display Design:**
+- **Star Rating**: 5-star system with filled/empty stars
+- **Average Score**: Numerical display (e.g., "4.2/5")
+- **Review Count**: Total reviews (e.g., "12 reviews")
+- **Star Colors**: 
+  - Filled stars: Gold/yellow (#FCD34D)
+  - Empty stars: Light gray (#E5E7EB)
+  - Hover states: Slightly darker gold
+- **Layout**: Compact vertical stack optimized for table cell
+- **Interactive Elements**: 
+  - Hover over stars shows individual ratings
+  - Click to expand review details (optional tooltip/modal)
+- **Rating Ranges**:
+  - 4.5-5.0: Excellent (green accent)
+  - 3.5-4.4: Good (blue accent)  
+  - 2.5-3.4: Average (yellow accent)
+  - 1.5-2.4: Below Average (orange accent)
+  - 0.0-1.4: Poor (red accent)
 
 ### Timeline Visualization Specifications
 

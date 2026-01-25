@@ -161,14 +161,17 @@ export default function EngineersTable() {
 
         {/* Table Container with Horizontal Scroll */}
         <div className="overflow-x-auto">
-          <div className="min-w-[1800px]"> {/* Minimum width to accommodate all columns */}
+          <div className="min-w-[1950px]"> {/* Minimum width to accommodate all 6 columns */}
             {/* Table Header */}
-            <div className="grid grid-cols-[150px_80px_200px_250px_1fr] gap-4 border-b border-gray-200 px-6 py-4 bg-gray-50 dark:bg-gray-800/20 dark:border-gray-700">
+            <div className="grid grid-cols-[150px_80px_180px_200px_180px_1fr] gap-4 border-b border-gray-200 px-6 py-4 bg-gray-50 dark:bg-gray-800/20 dark:border-gray-700">
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
                 Name
               </div>
               <div className="text-center text-sm font-semibold text-gray-800 dark:text-white/90">
                 Photo
+              </div>
+              <div className="text-center text-sm font-semibold text-gray-800 dark:text-white/90">
+                Rating & Reviews
               </div>
               <div className="text-sm font-semibold text-gray-800 dark:text-white/90">
                 Programming Languages

@@ -8,6 +8,22 @@ export interface Engineer {
   skills: ProgrammingSkill[];
   previousProjects: Project[];
   currentAssignments: Assignment[];
+  rating: EngineerRating;
+}
+
+export interface EngineerRating {
+  averageRating: number; // 0-5 stars
+  totalReviews: number;
+  reviews: Review[];
+}
+
+export interface Review {
+  id: string;
+  reviewerName: string;
+  rating: number; // 1-5 stars
+  comment: string;
+  date: string;
+  projectId?: string; // Optional reference to project
 }
 
 export interface ProgrammingSkill {

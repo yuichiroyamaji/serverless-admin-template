@@ -89,5 +89,26 @@
       "allocation": 20,
       "status": "Active"
     }
-  ]
+  ],
+  "rating": {
+    "averageRating": 4.5,
+    "totalReviews": 12,
+    "reviews": [
+      {
+        "id": "r6",
+        "reviewerName": "Alex Thompson",
+        "rating": 5,
+        "comment": "Exceptional backend architecture and database optimization skills.",
+        "date": "2024-01-05",
+        "projectId": "p5"
+      },
+      {
+        "id": "r7",
+        "reviewerName": "Lisa Wang",
+        "rating": 4,
+        "comment": "Reliable and efficient. Great at solving complex problems.",
+        "date": "2023-12-01"
+      }
+    ]
+  }
 }

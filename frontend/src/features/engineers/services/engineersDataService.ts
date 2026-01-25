@@ -1,4 +1,4 @@
-import { Engineer, Project, SkillDefinition } from '../types';
+import { Engineer, EngineerRating, Project, SkillDefinition } from '../types';
 
 /**
  * @description Load all engineers data from JSON files
@@ -19,11 +19,18 @@ export const loadEngineers = async (): Promise<Engineer[]> => {
     const engineersModule = await import('../data/engineers.json');
     const engineers = engineersModule.default as EngineerBasic[];
     // The basic engineers.json only has basic info, detailed info comes from individual files
+    const defaultRating: EngineerRating = {
+      averageRating: 0,
+      totalReviews: 0,
+      reviews: []
+    };
+    
     return engineers.map(engineer => ({
       ...engineer,
       skills: [],
       previousProjects: [],
-      currentAssignments: []
+      currentAssignments: [],
+      rating: defaultRating
     }));
   } catch (error) {
     console.error('Error loading engineers:', error);

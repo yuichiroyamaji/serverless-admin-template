@@ -89,5 +89,26 @@
       "allocation": 10,
       "status": "Upcoming"
     }
-  ]
+  ],
+  "rating": {
+    "averageRating": 4.3,
+    "totalReviews": 7,
+    "reviews": [
+      {
+        "id": "r10",
+        "reviewerName": "Tom Wilson",
+        "rating": 4,
+        "comment": "Great mobile development skills. Apps are always polished.",
+        "date": "2024-01-12",
+        "projectId": "p9"
+      },
+      {
+        "id": "r11",
+        "reviewerName": "Anna Davis",
+        "rating": 5,
+        "comment": "Excellent React Native expertise and user experience focus.",
+        "date": "2023-12-05"
+      }
+    ]
+  }
 }
